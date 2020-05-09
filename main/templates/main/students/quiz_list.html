@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'main/datatables/dataTables.bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block content %}
+  {% include 'main/students/header.html' with active='new' %}
+  <p class="text-muted">
+    Subjects:{% for subject in user.student.courses.all %} {{ subject }}{% endfor %}
+    <a href="{% url 'students:student_courses' %}"><small>(update courses)</small></a>
+  </p>
+
+  <table class="table table-bordered mb-0" id="#" >
+    <thead>
+      <tr>
+        <th>Quiz</th>
+        <th class="d-none d-sm-table-cell">Subject</th>
+        <th class="d-none d-sm-table-cell">Questions</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for quiz in quizzes %}
+        <tr{% if quiz.subject.id in student_subjects %} style="background: lightgrey"{%endif%}>
+          <td class="align-middle">{{ quiz.name }}</td>
+          <td class="align-middle d-none d-sm-table-cell">{{ quiz.subject }}</td>
+          <td class="align-middle d-none d-sm-table-cell">{{ quiz.questions_count }}</td>
+          <td class="text-right" data-orderable="false">
+            <a href="{% url 'students:take_quiz' quiz.pk %}" class="btn btn-primary">Start quiz</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td class="bg-light text-center font-italic" colspan="4">No quiz matching your course right now.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'main/js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'main/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'main/datatables/dataTables.bootstrap4.min.js' %}"></script>
+{% endblock %}

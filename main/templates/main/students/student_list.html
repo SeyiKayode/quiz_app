@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% load quiz_extras %}
+
+{% block css %}
+<style type="text/css">
+  .media {
+    margin-top: 10px
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+  {% include 'main/students/header.html' with active='students' %}
+<form method='GET'>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" name='q' value='{{ request.GET.q }}' placeholder="search">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<br>
+<div class="row">
+{% for student in students %}
+  <div class="col-sm-3">
+    <div class="media">
+      <a>
+        <img class="mr-3" src="{{ student.user.username }}" alt="{{ student.user.get_full_name }}">
+      </a>
+      <div class="media-body" style="font-size: 12px">
+        {{ student.user.get_full_name }}
+          {{ student.user.username }}<br>
+        <strong>{{ student.score }}</strong><br>
+{#        {{ student.taken_quizzes.all|top_subject }}#}
+      </div>
+    </div>
+  </div>
+{% empty %}
+  <div class="col-sm-6"><p>No student matched your search.</p></div>
+{% endfor %}
+</div>
+{% endblock %}
