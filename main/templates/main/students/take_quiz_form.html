@@ -40,6 +40,6 @@ input[type=radio]:checked + label:before{
   <form method="post" novalidate>
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="btn btn-primary">Finish →</button>
+    <button type="submit" class="btn btn-primary">Next →</button>
   </form>
 {% endblock %}
